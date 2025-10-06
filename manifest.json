@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "Local Media Auto Fit",
+  "version": "1.2",
+  "description": "Opens local images, GIFs, and videos (file://) and automatically fits them to the screen size.",
+  "permissions": [],
+  "host_permissions": ["file:///*"],
+  "content_scripts": [
+    {
+      "matches": ["file:///*"],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "icons": {
+    "48": "icon48.png",
+    "64": "icon64.png"
+  },
+  "applications": {
+    "gecko": {
+      "id": "local-fit@firefox",
+      "update_url": "https://raw.githubusercontent.com/s3lm4n/local-media-auto-fit/main/updates.json"
+    }
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "local-fit@firefox",
+      "strict_min_version": "109.0"
+    }
+  }
+}

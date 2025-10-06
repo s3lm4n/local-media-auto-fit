@@ -1,0 +1,12 @@
+{
+  "addons": {
+    "local-fit@firefox": {
+      "updates": [
+        {
+          "version": "1.1",
+          "update_link": "https://github.com/s3lm4n/local-media-auto-fit/releases/download/v1.1/local-media-auto-fit-v1.1.xpi"
+        }
+      ]
+    }
+  }
+}
