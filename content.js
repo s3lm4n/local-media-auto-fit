@@ -1,26 +1,22 @@
 (function() {
-  // Medya elementlerini seçme ve uygulama fonksiyonu
   function applyStylesToMedia() {
     const medias = document.querySelectorAll('img, video');
     if (!medias.length) return;
 
     medias.forEach(media => {
-      // Video için özel ayarlar
       if (media.tagName.toLowerCase() === 'video') {
-        media.setAttribute('controls', ''); // Opsiyonel: Kontroller, istemiyorsan kaldır
+        media.setAttribute('controls', '');
         media.style.maxWidth = '100vw';
         media.style.maxHeight = '100vh';
-        media.style.minWidth = '100vw'; // Büyütmeyi zorla
-        media.style.minHeight = '100vh'; // Büyütmeyi zorla
-        media.style.width = '100%'; // Tam genişlik
-        media.style.height = '100%'; // Tam yükseklik
-        media.style.objectFit = 'cover'; // Ekranı doldur, kırpma olabilir
+        media.style.minWidth = '100vw';
+        media.style.minHeight = '100vh';
+        media.style.width = '100%';
+        media.style.height = '100%';
+        media.style.objectFit = 'cover';
       } else {
-        // Görseller için (img, GIF)
-        media.style.objectFit = 'contain'; // Görsellerde orantıyı koru
+        media.style.objectFit = 'contain';
       }
 
-      // Ortak stiller
       Object.assign(media.style, {
         width: '100vw',
         height: '100vh',
@@ -36,7 +32,6 @@
     });
   }
 
-  // Body stilleri
   document.body.style.cssText = `
     margin: 0;
     padding: 0;
@@ -46,19 +41,16 @@
     justify-content: center;
     min-height: 100vh;
     overflow: hidden;
-    position: relative;
+    position: 'relative';
   `;
 
-  // İlk yüklemede stilleri uygula
   applyStylesToMedia();
 
-  // Dinamik yüklemeler için gözlemci
   const observer = new MutationObserver(() => {
     applyStylesToMedia();
   });
   observer.observe(document.body, { childList: true, subtree: true });
 
-  // Pencere yeniden boyutlandığında stilleri yenile
   window.addEventListener('resize', () => {
     applyStylesToMedia();
   });
