@@ -1,37 +1,67 @@
 (function() {
-  // Medya elementlerine stilleri uygulama fonksiyonu
   function applyStylesToMedia() {
     const medias = document.querySelectorAll('img, video');
     if (!medias.length) return;
 
     medias.forEach(media => {
+      // Reset previous styles to avoid stacking
+      media.style.minWidth = '';
+      media.style.minHeight = '';
+      media.style.width = '';
+      media.style.height = '';
+
       // Video için özel ayarlar
       if (media.tagName.toLowerCase() === 'video') {
-        media.setAttribute('controls', ''); // Opsiyonel: Kontroller, istemiyorsan kaldır
+        media.setAttribute('controls', ''); // Opsiyonel: Kontroller
+        const aspectRatio = media.videoWidth / media.videoHeight;
+        const windowAspectRatio = window.innerWidth / window.innerHeight;
+
+        if (aspectRatio > windowAspectRatio) {
+          // Video daha genişse, genişliği pencereye uydur
+          media.style.width = '100vw';
+          media.style.height = 'auto';
+        } else {
+          // Video daha uzunsa, yüksekliği pencereye uydur
+          media.style.height = '100vh';
+          media.style.width = 'auto';
+        }
+
         media.style.maxWidth = '100vw';
         media.style.maxHeight = '100vh';
-        media.style.minWidth = '100vw'; // Büyütmeyi zorla
-        media.style.minHeight = '100vh'; // Büyütmeyi zorla
-        media.style.width = '100%';
-        media.style.height = '100%';
-        media.style.objectFit = 'cover'; // Ekranı doldur, kırpma olabilir
+        media.style.objectFit = 'contain';
       } else {
         // Görseller için (img, GIF)
-        media.style.objectFit = 'contain'; // Orantıyı koru
+        const aspectRatio = media.naturalWidth / media.naturalHeight;
+        const windowAspectRatio = window.innerWidth / window.innerHeight;
+
+        if (aspectRatio > windowAspectRatio) {
+          // Görsel daha genişse, genişliği pencereye uydur
+          media.style.width = '100vw';
+          media.style.height = 'auto';
+        } else {
+          // Görsel daha uzunsa, yüksekliği pencereye uydur
+          media.style.height = '100vh';
+          media.style.width = 'auto';
+        }
+
+        media.style.maxWidth = '100vw';
+        media.style.maxHeight = '100vh';
+        media.style.objectFit = 'contain';
       }
 
       // Ortak stiller
       Object.assign(media.style, {
-        width: '100vw',
-        height: '100vh',
         objectPosition: 'center',
         display: 'block',
         margin: '0 auto',
         backgroundColor: 'black',
         boxSizing: 'border-box',
         position: 'absolute',
-        top: '0',
-        left: '0'
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        right: 'auto',
+        bottom: 'auto'
       });
     });
   }
@@ -66,6 +96,13 @@
   // Video oynatma başladığında tekrar kontrol et
   document.addEventListener('loadedmetadata', (e) => {
     if (e.target.tagName.toLowerCase() === 'video') {
+      applyStylesToMedia();
+    }
+  }, true);
+
+  // Görsel yüklenirken boyutları kontrol et
+  document.addEventListener('load', (e) => {
+    if (e.target.tagName.toLowerCase() === 'img') {
       applyStylesToMedia();
     }
   }, true);
